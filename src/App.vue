@@ -1,170 +1,262 @@
+<script setup>
+import { ref } from 'vue'
+
+const user = ref({
+  name: '',
+  surname: '',
+  email: 'pilgerrafael772@gmail.com',
+  city: '',
+  state: '',
+  zip: '',
+  avatar: '',
+  hobbies: [],
+  preferredLanguage: '',
+  biografia: ''
+})
+
+const states = [
+  { uf: 'AC', name: 'Acre' },
+  { uf: 'AL', name: 'Alagoas' },
+  { uf: 'AP', name: 'Amapá' },
+  { uf: 'AM', name: 'Amazonas' },
+  { uf: 'BA', name: 'Bahia' },
+  { uf: 'CE', name: 'Ceará' },
+  { uf: 'DF', name: 'Distrito Federal' },
+  { uf: 'ES', name: 'Espírito Santo' },
+  { uf: 'GO', name: 'Goiás' },
+  { uf: 'MA', name: 'Maranhão' },
+  { uf: 'MT', name: 'Mato Grosso' },
+  { uf: 'MS', name: 'Mato Grosso do Sul' },
+  { uf: 'MG', name: 'Minas Gerais' },
+  { uf: 'PA', name: 'Pará' },
+  { uf: 'PB', name: 'Paraíba' },
+  { uf: 'PR', name: 'Paraná' },
+  { uf: 'PE', name: 'Pernambuco' },
+  { uf: 'PI', name: 'Piauí' },
+  { uf: 'RJ', name: 'Rio de Janeiro' },
+  { uf: 'RN', name: 'Rio Grande do Norte' },
+  { uf: 'RS', name: 'Rio Grande do Sul' },
+  { uf: 'RO', name: 'Rondônia' },
+  { uf: 'RR', name: 'Roraima' },
+  { uf: 'SC', name: 'Santa Catarina' },
+  { uf: 'SP', name: 'São Paulo' },
+  { uf: 'SE', name: 'Sergipe' },
+  { uf: 'TO', name: 'Tocantins' }
+]
+
+const mostrarPerfil = ref(false)
+
+function handleFileUpload(e) {
+  const target = e.target
+  console.log(target)
+  if (target && target.files) {
+    const file = target.files[0]
+    user.value.avatar = URL.createObjectURL(file)
+  }
+}
+
+function salvarPerfil() {
+  mostrarPerfil.value = true
+}
+</script>
+
 <template>
-  <h1>{{ titulo }}</h1>
-  <div class="container d-flex flex-row gap-3">
-    <div class="formulario">
-      <h2>Cadastro de usuario</h2>
+  <div class="container">
+    <main>
+      <h1>Editor de Perfil</h1>
+      <transition name="form" mode="out-in">
+        <section v-if="mostrarPerfil">
+          <div class="mt-5 mb-3">
+            <p v-for="(value, key) of user" :key="key">{{ key }}: {{ value }}</p>
+            <img v-if="user.avatar" class="avatar" :src="user.avatar" />
+          </div>
+          <button class="btn btn-info" @click="mostrarPerfil = false">Esconder</button>
+        </section>
+        <form v-else class="row g-3 was-validated" @submit.prevent="salvarPerfil()" validate>
+          <div class="col-md-4">
+            <label for="nameField" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="nameField" v-model="user.name" required />
+            <div class="invalid-feedback">Nome obrigatório</div>
+          </div>
 
-      <div class="form-group">
-        <label for="">Nome:</label>
-        <input class="form-control" type="text" v-model="usuario.nome" />
-      </div>
+          <div class="col-md-4">
+            <label for="surnameField" class="form-label">Sobrenome</label>
+            <input
+              type="text"
+              class="form-control"
+              id="surnameField"
+              v-model="user.surname"
+              required
+            />
+            <div class="invalid-feedback">Sobrenome obrigatório</div>
+          </div>
 
-      <div class="form-group">
-        <label for="">E-mail:</label>
-        <input class="form-control" type="text" v-model="usuario.email" />
-      </div>
+          <div class="col-md-4">
+            <label for="emailField" class="form-label">E-mail</label>
+            <div class="input-group">
+              <span class="input-group-text" id="emailFieldPrepend">@</span>
+              <input
+                type="email"
+                class="form-control"
+                id="emailField"
+                aria-describedby="emailFieldPrepend"
+                v-model="user.email"
+                required
+              />
+              <div class="invalid-feedback">E-mail obrigatório.</div>
+              <div class="valid-feedback">E-mail válido!</div>
+            </div>
+          </div>
 
-      <div class="form-group">
-        <label for="">Data de nascismento:</label>
-        <input class="form-control" type="date" v-model="usuario.Data" />
-      </div>
+          <div>
+            <div class="col-md-6">
+              <label for="cityField" class="form-label">Cidade</label>
+              <input type="text" class="form-control" id="cityField" v-model="user.city" />
+            </div>
+            <div class="col-md-4">
+              <label for="stateField" class="form-label">Estado</label>
+              <select class="form-select" id="stateField" v-model="user.state">
+                <option selected disabled value="">Selecionar...</option>
+                <option v-for="state of states" :key="state.uf" :value="state.uf">
+                  {{ state.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <label for="zipField" class="form-label">CEP</label>
+            <input type="text" class="form-control" id="zipField" v-model="user.zip" />
+          </div>
 
-      <div class="form-group">
-        <label for="">Endereço:</label>
-        <input class="form-control" type="text" v-model="usuario.endereco" />
-      </div>
+          <div class="col-md-6">
+            <label for="avatarField" class="form-label">Avatar</label>
+            <input
+              type="file"
+              class="form-control"
+              id="avatarField"
+              @change="handleFileUpload($event)"
+            />
+          </div>
 
-      <div class="form-group">
-        <label for="">Cidade:</label>
-        <input class="form-control" type="text" v-model="usuario.Cidade" />
-      </div>
+          <div class="col-6">
+            <p class="mb-0">Hobbies</p>
+            <input
+              class="ms-3 me-1"
+              type="checkbox"
+              id="hobbiesField"
+              value="esportes"
+              v-model="user.hobbies"
+            />
+            <label for="hobbiesField">Esportes</label>
+            <input
+              class="ms-3 me-1"
+              type="checkbox"
+              id="hobbiesField"
+              value="música"
+              v-model="user.hobbies"
+            />
+            <label for="hobbiesField">Música</label>
+            <input
+              class="ms-3 me-1"
+              type="checkbox"
+              id="hobbiesField"
+              value="viagens"
+              v-model="user.hobbies"
+            />
+            <label for="hobbiesField">Viagens</label>
+            <input
+              class="ms-3 me-1"
+              type="checkbox"
+              id="hobbiesField"
+              value="leitura"
+              v-model="user.hobbies"
+            />
+            <label for="hobbiesField">Leitura</label>
+          </div>
 
-      <div class="form-group">
-        <label for="">Hobbies:</label>
-        <input class="form-control" type="text" v-model="usuario.Hobbies" />
-      </div>
+          <div class="col-6">
+            <p class="mb-0">Linguagem preferida</p>
+            <input
+              class="ms-3 me-1"
+              type="radio"
+              id="langC"
+              value="C"
+              v-model="user.preferredLanguage"
+            />
+            <label for="langC">C</label>
+            <input
+              class="ms-3 me-1"
+              type="radio"
+              v-model="user.preferredLanguage"
+              value="Java"
+              id="langJava"
+            />
+            <label for="langJava">Java</label>
+            <input
+              class="ms-3 me-1"
+              type="radio"
+              v-model="user.preferredLanguage"
+              value="Python"
+              id="langPython"
+            />
+            <label for="langPython">Python</label>
+            <input
+              class="ms-3 me-1"
+              type="radio"
+              v-model="user.preferredLanguage"
+              value="Javascript"
+              id="langJs"
+            />
+            <label for="langJs">JavaScript</label>
+          </div>
 
-      <div class="form-group">
-        <label for="">Biografia</label>
-        <input class="form-control" type="text" v-model="usuario.Biografia" />
-      </div>
+          <div class="col-md-4">
+            <label for="bioField" class="form-label">Biografia</label>
+            <textarea id="bioField" v-model="user.biografia" required></textarea>
+          </div>
 
-      <div class="select">
-        <div class="form-group">
-          <label for="">Estados:</label>
-          <select name="estado" id="estado">
-            <option value="AC">Acre</option>
-            <option value="AL">Alagoas</option>
-            <option value="AP">Amapá</option>
-            <option value="AM">Amazonas</option>
-            <option value="BA">Bahia</option>
-            <option value="CE">Ceará</option>
-            <option value="DF">Distrito Federal</option>
-            <option value="ES">Espírito Santo</option>
-            <option value="GO">Goiás</option>
-            <option value="MA">Maranhão</option>
-            <option value="MT">Mato Grosso</option>
-            <option value="MS">Mato Grosso do Sul</option>
-            <option value="MG">Minas Gerais</option>
-            <option value="PA">Pará</option>
-            <option value="PB">Paraíba</option>
-            <option value="PR">Paraná</option>
-            <option value="PE">Pernambuco</option>
-            <option value="PI">Piauí</option>
-            <option value="RJ">Rio de Janeiro</option>
-            <option value="RN">Rio Grande do Norte</option>
-            <option value="RS">Rio Grande do Sul</option>
-            <option value="RO">Rondônia</option>
-            <option value="RR">Roraima</option>
-            <option value="SC">Santa Catarina</option>
-            <option value="SP">São Paulo</option>
-            <option value="SE">Sergipe</option>
-            <option value="TO">Tocantins</option>
-          </select>
-        </div>
-      </div>
-      <button type="button" class="button" @click="mostrarResultado = !mostrarResultado">
-        Mostrar
-      </button>
-    </div>
-
-    <div v-if="mostrarResultado" class="resultado">
-      <h2>Dados do usuario</h2>
-      <p>Nome: {{ usuario.nome }}</p>
-      <p>E-mail {{ formatarPreco(usuario.email) }}</p>
-      <p>Data de nascimento: {{ usuario.Data }}</p>
-      <p>Endereço: {{ usuario.endereco }}</p>
-      <p>Cidade: {{ usuario.Cidade }}</p>
-      <P>Estado: {{ usuario.estados }}</P>
-      <p>Hobbies: {{ usuario.Hobbies }}</p>
-      <p>Biografia: {{ usuario.Biografia }}</p>
-    </div>
-  </div>
-
-  <div class="altera-titulo">
-    <label>Informe um novo título </label>
-    <input class="form-control" type="text" v-model="titulo" />
+          <div class="col-12">
+            <button class="btn btn-primary" type="submit">Enviar</button>
+          </div>
+        </form>
+      </transition>
+    </main>
   </div>
 </template>
 
 <style scoped>
-.select {
-  margin-top: 7px;
-  border-radius: 10000px;
-}
-.button {
-  border-radius: 25px;
-  background-color: black;
-  margin-top: 20px;
-  margin-left: 8.5rem;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-  border-color: blue;
-  padding: 5px 10px;
-  display: inline-block;
-  transition: background-color 0.5s;
-  align-items: center;
-}
-.button:hover {
-  background-color: rgb(20, 0, 201);
+.container {
+  width: 90%;
+  max-width: 600px;
+  margin: 40px auto 0;
+  padding: 20px;
+  border: 15px solid #000146;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #571892; 
+  color: black;
 }
 
-.formulario,
-.resultado {
-  width: 48%;
-  border-radius: 25px;
+.main {
   padding: 20px;
 }
 
-.formulario {
-  color: antiquewhite;
-  background-color: #000000;
-  align-items: center;
-  border: 10px;
-  border-color: blue;
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-.resultado {
-  background-color: #98e0aa;
+.text-center {
+  text-align: center;
 }
 
-.altera-titulo {
-  background-color: #98e0aa;
-  margin: 1rem 2rem;
-  border-radius: 20px;
-  padding: 0.75rem;
+.form-group {
+  margin-bottom: 1.5rem; 
+}
+
+label {
+  margin-bottom: 1rem;
 }
 </style>
-
-<script setup>
-import { reactive, ref } from 'vue'
-
-const titulo = ref('Oi VueJs!')
-const mostrarResultado = ref(false)
-
-const estados = []
-
-const usuario = reactive({
-  nome: '',
-  email: '',
-  Data: 0,
-  endereço: '',
-  Cidade: '',
-  estados: '',
-  Biografia: ''
-})
-
-function formatarPreco(email) {
-  return `${email}`
-}
-</script>
