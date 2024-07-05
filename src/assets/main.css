@@ -8,5 +8,5 @@
 body {
   font-family: 'poppins', sans-serif;
   font-size: 24px;
-  background: linear-gradient(to bottom, green 0%, black 35%);
+  background: linear-gradient(to bottom, rgb(0, 217, 255) 0%, rgb(25, 91, 100) 35%);
 }

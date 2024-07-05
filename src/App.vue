@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue'
-
 const user = ref({
   name: '',
   surname: '',
@@ -13,7 +12,6 @@ const user = ref({
   preferredLanguage: '',
   biografia: ''
 })
-
 const states = [
   { uf: 'AC', name: 'Acre' },
   { uf: 'AL', name: 'Alagoas' },
@@ -43,9 +41,7 @@ const states = [
   { uf: 'SE', name: 'Sergipe' },
   { uf: 'TO', name: 'Tocantins' }
 ]
-
 const mostrarPerfil = ref(false)
-
 function handleFileUpload(e) {
   const target = e.target
   console.log(target)
@@ -54,12 +50,10 @@ function handleFileUpload(e) {
     user.value.avatar = URL.createObjectURL(file)
   }
 }
-
 function salvarPerfil() {
   mostrarPerfil.value = true
 }
 </script>
-
 <template>
   <div class="container">
     <main>
@@ -78,7 +72,6 @@ function salvarPerfil() {
             <input type="text" class="form-control" id="nameField" v-model="user.name" required />
             <div class="invalid-feedback">Nome obrigatório</div>
           </div>
-
           <div class="col-md-4">
             <label for="surnameField" class="form-label">Sobrenome</label>
             <input
@@ -90,7 +83,6 @@ function salvarPerfil() {
             />
             <div class="invalid-feedback">Sobrenome obrigatório</div>
           </div>
-
           <div class="col-md-4">
             <label for="emailField" class="form-label">E-mail</label>
             <div class="input-group">
@@ -107,7 +99,6 @@ function salvarPerfil() {
               <div class="valid-feedback">E-mail válido!</div>
             </div>
           </div>
-
           <div>
             <div class="col-md-6">
               <label for="cityField" class="form-label">Cidade</label>
@@ -137,7 +128,6 @@ function salvarPerfil() {
               @change="handleFileUpload($event)"
             />
           </div>
-
           <div class="col-6">
             <p class="mb-0">Hobbies</p>
             <input
@@ -209,12 +199,10 @@ function salvarPerfil() {
             />
             <label for="langJs">JavaScript</label>
           </div>
-
           <div class="col-md-4">
             <label for="bioField" class="form-label">Biografia</label>
             <textarea id="bioField" v-model="user.biografia" required></textarea>
           </div>
-
           <div class="col-12">
             <button class="btn btn-primary" type="submit">Enviar</button>
           </div>
@@ -223,39 +211,33 @@ function salvarPerfil() {
     </main>
   </div>
 </template>
-
 <style scoped>
 .container {
   width: 90%;
-  max-width: 600px;
-  margin: 40px auto 0;
+  max-width: 700px;
+  margin: 40px auto 1;
   padding: 20px;
-  border: 15px solid #000146;
+  border: 15px solid #ff5e00;
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: #571892; 
+  background-color: #ca5823; 
   color: black;
 }
-
 .main {
   padding: 20px;
 }
-
 .avatar {
   width: 100px;
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
 }
-
 .text-center {
   text-align: center;
 }
-
 .form-group {
   margin-bottom: 1.5rem; 
 }
-
 label {
   margin-bottom: 1rem;
 }
