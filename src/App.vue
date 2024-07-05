@@ -3,9 +3,12 @@ import { ref } from 'vue'
 const user = ref({
   name: '',
   surname: '',
-  email: 'pilgerrafael772@gmail.com',
+  date: '',
+  email: 'matheusliesenberg3@gmail.com',
+  password: '',
+  vpassword: '',
   city: '',
-  state: '',
+  State: '',
   zip: '',
   avatar: '',
   hobbies: [],
@@ -50,9 +53,14 @@ function handleFileUpload(e) {
     user.value.avatar = URL.createObjectURL(file)
   }
 }
+
 function salvarPerfil() {
   mostrarPerfil.value = true
 }
+  const password = ''
+  const vpassword = ''
+
+
 </script>
 <template>
   <div class="container">
@@ -83,6 +91,18 @@ function salvarPerfil() {
             />
             <div class="invalid-feedback">Sobrenome obrigatório</div>
           </div>
+          
+          <div class="col-md-4">
+            <label for="dateField" class="form-label">Data de nascimento</label>
+            <input
+              type="Date"
+              class="form-control"
+              id="dateField"
+              v-model="user.date"
+              required
+            />
+            <div class="invalid-feedback">Data de nascimento obrigatória</div>
+          </div>
           <div class="col-md-4">
             <label for="emailField" class="form-label">E-mail</label>
             <div class="input-group">
@@ -98,6 +118,29 @@ function salvarPerfil() {
               <div class="invalid-feedback">E-mail obrigatório.</div>
               <div class="valid-feedback">E-mail válido!</div>
             </div>
+          </div>
+          <div class="col-md-4">
+            <label for="passwordField" class="form-label">Senha</label>
+            <input
+              type="password"
+              class="form-control"
+              id="passwordField"
+              v-model="user.password"
+              required
+            />
+            <div class="invalid-feedback">Senha obrigatória</div>
+          </div>
+          <div class="col-md-4">
+            <label for="vpasswordField" class="form-label">Repita a senha</label>
+            <input
+              type="password"
+              class="form-control"
+              id="vpasswordField"
+              v-model="user.vpassword"
+              required
+              
+            />
+            <div class="invalid-feedback">Verificação obrigatória</div>
           </div>
           <div>
             <div class="col-md-6">
@@ -214,13 +257,13 @@ function salvarPerfil() {
 <style scoped>
 .container {
   width: 90%;
-  max-width: 700px;
+  max-width: 900px;
   margin: 40px auto 1;
   padding: 20px;
-  border: 15px solid #ff5e00;
+  border: 15px solid #75cdff;
   border-radius: 15px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: #ca5823; 
+  box-shadow: 0 0 10px  rgb(0, 217, 255) 0%);
+  background-color:   #226baf; 
   color: black;
 }
 .main {
